@@ -32,71 +32,71 @@ class Program
             switch (number)
             {
                 case 1:
-                        try
-                        {
-                            Console.Clear();
-                            ConsWriteLnText(true, "Игра угадай число");
-                            Console.WriteLine("Введите значение А не равное 0:");
-                            double a;
-                            double otvet;
-                            double result=0;
-                            Formula(result);
-                        Console.WriteLine(result);
-                            //while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
-                            //{
-                            //    ConsWriteLnText(false, "Введите числовое значение для А не равное 0:");
-                            //}
-                            //double verx = (Math.Sin(a) + Math.Tan(2 * a));
-                            //double niz = (Math.Log(Math.Pow(eler, 2), 3));
-                            //if (niz < 0)
-                            //{
-                            //    ConsWriteLnText(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
-                            //    BackToMenuTxt();
-                            //    Console.ReadKey();
-                            //    break;
-                            //}
+                    try
+                    {
+                        Console.Clear();
+                        ConsWriteLnText(true, "Игра угадай число");
+                        Console.WriteLine("Введите значение А не равное 0:");
+                        double a;
+                        double otvet;
 
-                        //niz = (Math.Sqrt(niz));
-                        //double result = verx / niz;
-                        //result = (Math.Round(result, 2));
-                            bool game = false;
-                            ConsWriteLnText(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
-                            for (int i = 0; i < 3; i++)
-                            {
-                                while (!double.TryParse(Console.ReadLine(), out otvet))
-                                {
-                                    ConsWriteLnText(false, "Вы ввели не число(");
-                                }
-                                Console.WriteLine($"\nПопытка {i + 1} из 3");
-                                if (i != 2)
-                                {
-                                    ConsWriteLnText(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
-                                }
-                                if (result == otvet)
-                                {
-                                    i = 2;
-                                    game = true;
-                                    Console.WriteLine($"Ура победа! Ваш ответ: {otvet}");
-                                }
-                                if (result != otvet && i == 2)
-                                {
-                                    game = false;
-                                    ConsWriteLnText(false, $"Вы проиграли((( Правильный ответ:{result} ");
-                                }
-                            }
-                        }
-                        catch (ArgumentException ex)
+
+                        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
                         {
-                            ConsWriteLnText(false, $"Ошибка аргумента: {ex.Message}");
+                            ConsWriteLnText(false, "Введите числовое значение для А не равное 0:");
                         }
-                        catch (DivideByZeroException)
+                        double verx = (Math.Sin(a) + Math.Tan(2 * a));
+                        double niz = (Math.Log(Math.Pow(eler, 2), 3));
+                        if (niz < 0)
                         {
-                            ConsWriteLnText(false, "Деление на 0");
+                            ConsWriteLnText(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
                             BackToMenuTxt();
                             Console.ReadKey();
                             break;
                         }
+                        niz = (Math.Sqrt(niz));
+                        double result = verx / niz;
+                        result = (Math.Round(result, 2));
+                        
+                        ConsWriteLnText(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
+                        for (int i = 0; i < 3; i++)
+                        {
+                            while (!double.TryParse(Console.ReadLine(), out otvet))
+                            {
+                                ConsWriteLnText(false, "Вы ввели не число(");
+                            }
+                            Console.WriteLine($"\nПопытка {i + 1} из 3");
+                            if (result == otvet)
+                            {
+                                i = 2;
+                               
+                                ConsWriteLnText(true, $"Ура победа! Ваш ответ: {otvet}");
+                            }
+                            if (result != otvet && i == 2)
+                            {
+                               
+                                ConsWriteLnText(false, $"Вы проиграли((( Правильный ответ:{result} ");
+                            }
+                            if (i != 2)
+                            {
+                                ConsWriteLnText(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
+                            }
+                           
+                            
+                        }
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        ConsWriteLnText(false, $"Ошибка аргумента: {ex.Message}");
+                    }
+                    catch (DivideByZeroException)
+                    {
+                        ConsWriteLnText(false, "Деление на 0");
                         BackToMenuTxt();
+                        Console.ReadKey();
+                        break;
+                    }
+                    BackToMenuTxt();
                         Console.ReadKey();
                         Console.Clear();
                     break;
@@ -111,30 +111,98 @@ class Program
             }
         } 
     }
-    static double Formula(double kley)
-    {
-        const double eler = Math.E;
-        double a;
-        double otvet;
-        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
-        {
-            ConsWriteLnText(false, "Введите числовое значение для А не равное 0:");
-        }
-        double verx = (Math.Sin(a) + Math.Tan(2 * a));
-        double niz = (Math.Log(Math.Pow(eler, 2), 3));
-        if (niz < 0)
-        {
-            ConsWriteLnText(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
-            BackToMenuTxt();
-            Console.ReadKey();
-            
-        }
+    //static double Formula(double kley)
+    //{
+    //    const double eler = Math.E;
+    //    double a;
+    //    double otvet;
+    //    while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
+    //    {
+    //        ConsWriteLnText(false, "Введите числовое значение для А не равное 0:");
+    //    }
+    //    double verx = (Math.Sin(a) + Math.Tan(2 * a));
+    //    double niz = (Math.Log(Math.Pow(eler, 2), 3));
+    //    if (niz < 0)
+    //    {
+    //        ConsWriteLnText(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
+    //        BackToMenuTxt();
+    //        Console.ReadKey();
+    //        break;
+    //    }
 
-        niz = (Math.Sqrt(niz));
-        double result = verx / niz;
-        result = (Math.Round(result, 2));
-        return result;
-    }
+    //    niz = (Math.Sqrt(niz));
+    //    double result = verx / niz;
+    //    result = (Math.Round(result, 2));
+    //    return result;
+    //}
+    //private static void Game()
+    //{
+    //    const double eler = Math.E;
+    //    try
+    //    {
+    //        Console.Clear();
+    //        ConsWriteLnText(true, "Игра угадай число");
+    //        Console.WriteLine("Введите значение А не равное 0:");
+    //        double a;
+    //        double otvet;
+
+
+    //        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
+    //        {
+    //            ConsWriteLnText(false, "Введите числовое значение для А не равное 0:");
+    //        }
+    //        double verx = (Math.Sin(a) + Math.Tan(2 * a));
+    //        double niz = (Math.Log(Math.Pow(eler, 2), 3));
+    //        if (niz < 0)
+    //        {
+    //            ConsWriteLnText(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
+    //            BackToMenuTxt();
+    //            Console.ReadKey();
+    //            break;
+    //        }
+    //        niz = (Math.Sqrt(niz));
+    //        double result = verx / niz;
+    //        result = (Math.Round(result, 2));
+            
+    //        ConsWriteLnText(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
+    //        for (int i = 0; i < 3; i++)
+    //        {
+    //            while (!double.TryParse(Console.ReadLine(), out otvet))
+    //            {
+    //                ConsWriteLnText(false, "Вы ввели не число(");
+    //            }
+    //            Console.WriteLine($"\nПопытка {i + 1} из 3");
+    //            if (i != 2)
+    //            {
+    //                ConsWriteLnText(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
+    //            }
+    //            if (result == otvet)
+    //            {
+    //                i = 2;
+             
+    //                Console.WriteLine($"Ура победа! Ваш ответ: {otvet}");
+    //            }
+    //            if (result != otvet && i == 2)
+    //            {
+                    
+    //                ConsWriteLnText(false, $"Вы проиграли((( Правильный ответ:{result} ");
+    //            }
+    //        }
+    //    }
+    //    catch (ArgumentException ex)
+    //    {
+    //        ConsWriteLnText(false, $"Ошибка аргумента: {ex.Message}");
+    //        throw;
+    //    }
+    //    catch (DivideByZeroException)
+    //    {
+    //        ConsWriteLnText(false, "Деление на 0");
+    //        BackToMenuTxt();
+    //        Console.ReadKey();
+    //        throw;
+    //        break;
+    //    }
+    //}
     static void BackToMenuTxt()
     {
         Console.ForegroundColor = ConsoleColor.White;
@@ -152,7 +220,6 @@ class Program
         {
             while (char.TryParse(Console.ReadLine(), out yn))
             {
-            
                 if (yn == 'д' || yn == 'н')
                 {
                     if (yn == 'д')
