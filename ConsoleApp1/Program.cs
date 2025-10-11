@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Reflection.Metadata.Ecma335;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 class Program 
 { 
     static void Main(string[] args) {
@@ -103,6 +104,22 @@ class Program
                 case 2:
                     Avtor();
                     break;
+                case 3:
+                    
+                    WriteArray();
+                    //RandomArray();
+                   
+                    //CopyArr();
+                    //ConsWriteLnText(false, "Введите длину массива не длинее 10");
+
+                    //int arrayLng;
+                    //while(!int.TryParse(Console.ReadLine(), out arrayLng)|| (arrayLng>10 && arrayLng<0)){
+                    //    ConsWriteLnText(false, "Введите другую длину массива");
+                    //}
+
+                    //int[]? array;
+                    //    RandomArray(array);
+                    break;
                 case 4:
                     ExiProgram(bob);
                     menu = bob;
@@ -163,7 +180,7 @@ class Program
     //        niz = (Math.Sqrt(niz));
     //        double result = verx / niz;
     //        result = (Math.Round(result, 2));
-            
+
     //        ConsWriteLnText(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
     //        for (int i = 0; i < 3; i++)
     //        {
@@ -179,12 +196,12 @@ class Program
     //            if (result == otvet)
     //            {
     //                i = 2;
-             
+
     //                Console.WriteLine($"Ура победа! Ваш ответ: {otvet}");
     //            }
     //            if (result != otvet && i == 2)
     //            {
-                    
+
     //                ConsWriteLnText(false, $"Вы проиграли((( Правильный ответ:{result} ");
     //            }
     //        }
@@ -203,6 +220,63 @@ class Program
     //        break;
     //    }
     //}
+    
+    static int ArrayLngMethod()
+    {
+        int arrayLng;
+        ConsWriteLnText(true, "Введите длину массива не длинее 10");
+        while (!int.TryParse(Console.ReadLine(), out arrayLng)|| arrayLng<1){
+        ConsWriteLnText(false, "Введите другую длину массива");
+        }
+        return arrayLng;
+    }
+    static int[] RandomArray()
+    {
+
+        int size = ArrayLngMethod();
+        int[] a = new int[size];
+        Random rnd = new Random();
+        for (int i = 0; i < a.Length; i++)
+        {
+
+            a[i] = rnd.Next(-10, 10);
+        }
+        
+        return a ;
+    }
+    static int[] CopyArr(int[] originalArray)
+    {
+        int[] copyArray = new int[originalArray.Length];
+        for (int i = 0; i < originalArray.Length; i++)
+        {
+            copyArray[i] = originalArray[i];
+        }
+        return copyArray;
+    }
+
+    static void WriteArray()
+    {
+        int[] myArray = RandomArray();
+
+        Console.WriteLine("Сгенерированный массив:");
+        foreach (int num in myArray)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine("\n");
+        int[] myArray1 = CopyArr(myArray);
+
+        Console.WriteLine("Скопированный массив:");
+        foreach (int num in myArray1)
+        {
+            Console.Write(num + " ");
+        }
+        Console.WriteLine("\n");
+
+    }
+
+
+
     static void BackToMenuTxt()
     {
         Console.ForegroundColor = ConsoleColor.White;
