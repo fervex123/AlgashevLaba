@@ -7,11 +7,11 @@ class Program
 {
     static void Main(string[] args) {
 
-        bool menu = false;
+        bool menu = true;
         const double eler = Math.E;
-        bool bob = false;
+       
 
-        while (menu == false)
+        while (menu == true)
         {
 
             //Console.Clear();
@@ -34,70 +34,7 @@ class Program
             switch (number)
             {
                 case 1:
-                    try
-                    {
-                        Console.Clear();
-                        ConsoleWriteLineColor(true, "Игра угадай число");
-                        Console.WriteLine("Введите значение А не равное 0:");
-                        double a;
-                        double otvet;
-
-
-                        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
-                        {
-                            ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
-                        }
-                        double verx = (Math.Sin(a) + Math.Tan(2 * a));
-                        double niz = (Math.Log(Math.Pow(eler, 2), 3));
-                        if (niz < 0)
-                        {
-                            ConsoleWriteLineColor(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
-                            BackToMenuTxt();
-                            Console.ReadKey();
-                            break;
-                        }
-                        niz = (Math.Sqrt(niz));
-                        double result = verx / niz;
-                        result = (Math.Round(result, 2));
-
-                        ConsoleWriteLineColor(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
-                        for (int i = 0; i < 3; i++)
-                        {
-                            while (!double.TryParse(Console.ReadLine(), out otvet))
-                            {
-                                ConsoleWriteLineColor(false, "Вы ввели не число(");
-                            }
-                            Console.WriteLine($"\nПопытка {i + 1} из 3");
-                            if (result == otvet)
-                            {
-                                i = 2;
-
-                                ConsoleWriteLineColor(true, $"Ура победа! Ваш ответ: {otvet}");
-                            }
-                            if (result != otvet && i == 2)
-                            {
-
-                                ConsoleWriteLineColor(false, $"Вы проиграли((( Правильный ответ:{result} ");
-                            }
-                            if (i != 2)
-                            {
-                                ConsoleWriteLineColor(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
-                            }
-
-
-                        }
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        ConsoleWriteLineColor(false, $"Ошибка аргумента: {ex.Message}");
-                    }
-                    catch (DivideByZeroException)
-                    {
-                        ConsoleWriteLineColor(false, "Деление на 0");
-                        BackToMenuTxt();
-                        Console.ReadKey();
-                        break;
-                    }
+                    Game();
                     BackToMenuTxt();
                     Console.ReadKey();
                     Console.Clear();
@@ -111,105 +48,84 @@ class Program
 
                     break;
                 case 4:
-                    ExiProgram(bob);
-                    menu = bob;
+                   
+                    menu = ExiProgram();
                     break;
 
             }
         }
     }
-    //static double Formula(double kley)
-    //{
-    //    const double eler = Math.E;
-    //    double a;
-    //    double otvet;
-    //    while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
-    //    {
-    //        ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
-    //    }
-    //    double verx = (Math.Sin(a) + Math.Tan(2 * a));
-    //    double niz = (Math.Log(Math.Pow(eler, 2), 3));
-    //    if (niz < 0)
-    //    {
-    //        ConsoleWriteLineColor(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
-    //        BackToMenuTxt();
-    //        Console.ReadKey();
-    //        break;
-    //    }
+    static double Formula()
+    {
+        const double eler = Math.E;
+        double a;
+        
+        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
+        {
+            ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
+        }
+        double verx = (Math.Sin(a) + Math.Tan(2 * a));
+        double niz = (Math.Log(Math.Pow(eler, 2), 3));
+        if (niz < 0)
+        {
+            ConsoleWriteLineColor(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
+            BackToMenuTxt();
+            Console.ReadKey();
+           
+        }
 
-    //    niz = (Math.Sqrt(niz));
-    //    double result = verx / niz;
-    //    result = (Math.Round(result, 2));
-    //    return result;
-    //}
-    //private static void Game()
-    //{
-    //    const double eler = Math.E;
-    //    try
-    //    {
-    //        Console.Clear();
-    //        ConsoleWriteLineColor(true, "Игра угадай число");
-    //        Console.WriteLine("Введите значение А не равное 0:");
-    //        double a;
-    //        double otvet;
+        niz = (Math.Sqrt(niz));
+        double result = verx / niz;
+        result = (Math.Round(result, 2));
+        return result;
+    }
+    private static void Game()
+    {
+        try
+        {
+            Console.Clear();
+            ConsoleWriteLineColor(true, "Игра угадай число");
+            Console.WriteLine("Введите значение А не равное 0:");
+            double otvet;
+            double result = Formula();
+            ConsoleWriteLineColor(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
+            for (int i = 0; i < 3; i++)
+            {
+                while (!double.TryParse(Console.ReadLine(), out otvet))
+                {
+                    ConsoleWriteLineColor(false, "Вы ввели не число(");
+                }
+                Console.WriteLine($"\nПопытка {i + 1} из 3");
+                if (result == otvet)
+                {
+                    i = 2;
 
-
-    //        while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
-    //        {
-    //            ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
-    //        }
-    //        double verx = (Math.Sin(a) + Math.Tan(2 * a));
-    //        double niz = (Math.Log(Math.Pow(eler, 2), 3));
-    //        if (niz < 0)
-    //        {
-    //            ConsoleWriteLineColor(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
-    //            BackToMenuTxt();
-    //            Console.ReadKey();
-    //            break;
-    //        }
-    //        niz = (Math.Sqrt(niz));
-    //        double result = verx / niz;
-    //        result = (Math.Round(result, 2));
-
-    //        ConsoleWriteLineColor(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
-    //        for (int i = 0; i < 3; i++)
-    //        {
-    //            while (!double.TryParse(Console.ReadLine(), out otvet))
-    //            {
-    //                ConsoleWriteLineColor(false, "Вы ввели не число(");
-    //            }
-    //            Console.WriteLine($"\nПопытка {i + 1} из 3");
-    //            if (i != 2)
-    //            {
-    //                ConsoleWriteLineColor(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
-    //            }
-    //            if (result == otvet)
-    //            {
-    //                i = 2;
-
-    //                Console.WriteLine($"Ура победа! Ваш ответ: {otvet}");
-    //            }
-    //            if (result != otvet && i == 2)
-    //            {
-
-    //                ConsoleWriteLineColor(false, $"Вы проиграли((( Правильный ответ:{result} ");
-    //            }
-    //        }
-    //    }
-    //    catch (ArgumentException ex)
-    //    {
-    //        ConsoleWriteLineColor(false, $"Ошибка аргумента: {ex.Message}");
-    //        throw;
-    //    }
-    //    catch (DivideByZeroException)
-    //    {
-    //        ConsoleWriteLineColor(false, "Деление на 0");
-    //        BackToMenuTxt();
-    //        Console.ReadKey();
-    //        throw;
-    //        break;
-    //    }
-    //}
+                    ConsoleWriteLineColor(true, $"Ура победа! Ваш ответ: {otvet}");
+                }
+                if (result != otvet && i == 2)
+                {
+                   ConsoleWriteLineColor(false, $"Вы проиграли((( Правильный ответ:{result} ");
+                }
+                if (i != 2)
+                {
+                    ConsoleWriteLineColor(false, "Введите ваш ответ (округленный до 2 знаков после запятой):");
+                }
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            ConsoleWriteLineColor(false, $"Ошибка аргумента: {ex.Message}");
+            throw;
+        }
+        catch (DivideByZeroException)
+        {
+            ConsoleWriteLineColor(false, "Деление на 0");
+            BackToMenuTxt();
+            Console.ReadKey();
+            
+            return;
+        }
+    }
 
     static int ArrayLengthMethod()
     {
@@ -244,7 +160,6 @@ class Program
         }
         return copyArray;
     }
-   
     static void VivodVseh(int[] allArr)
     {
 
@@ -337,33 +252,29 @@ class Program
         }
         return copy;
     }
-
-
     static void BackToMenuTxt()
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
         Console.ResetColor();
     }
-     public static bool ExiProgram(bool menu)
+     public static bool ExiProgram()
     {
         Console.Clear();
         ConsoleWriteLineColor(true, "Вы дейсвительно хотите выйти: д|н");
         char yn;
-        menu = false;
-        bool vixod = false;
-        while (vixod == false)
-        {
-            while (char.TryParse(Console.ReadLine(), out yn))
+        bool menu = true;
+        bool vixod = true;
+         while (char.TryParse(Console.ReadLine(), out yn) && vixod == true)
             {
                 if (yn == 'д' || yn == 'н')
                 {
                     if (yn == 'д')
                     {
-                        menu = true;
-                        vixod = true;
+                        menu = false;
+                        vixod = false;
                         Console.WriteLine("нажмите что-то чтобы закрыть");
-                        Console.ReadKey();
+                       
                     }
                     else
                     {
@@ -376,7 +287,6 @@ class Program
                     ConsoleWriteLineColor(false, "Введите д или н");
                 }
             }
-        }
         Console.Clear();
         return menu;
     }
@@ -403,6 +313,3 @@ class Program
         return a;
     }
 }
-
-
-
