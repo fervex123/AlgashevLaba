@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 class Program 
@@ -107,18 +108,7 @@ class Program
                 case 3:
                     
                     WriteArray();
-                    //RandomArray();
                    
-                    //CopyArr();
-                    //ConsWriteLnText(false, "Введите длину массива не длинее 10");
-
-                    //int arrayLng;
-                    //while(!int.TryParse(Console.ReadLine(), out arrayLng)|| (arrayLng>10 && arrayLng<0)){
-                    //    ConsWriteLnText(false, "Введите другую длину массива");
-                    //}
-
-                    //int[]? array;
-                    //    RandomArray(array);
                     break;
                 case 4:
                     ExiProgram(bob);
@@ -257,22 +247,65 @@ class Program
     static void WriteArray()
     {
         int[] myArray = RandomArray();
-
-        Console.WriteLine("Сгенерированный массив:");
-        foreach (int num in myArray)
+        if (myArray.Length > 10==false)
         {
-            Console.Write(num + " ");
-        }
-        Console.WriteLine("\n");
-        int[] myArray1 = CopyArr(myArray);
+            Console.WriteLine("Сгенерированный массив:");
+            foreach (int num in myArray)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine("\n");
+            int[] myArray1 = CopyArr(myArray);
 
-        Console.WriteLine("Скопированный массив:");
-        foreach (int num in myArray1)
+            Console.WriteLine("Скопированный массив:");
+            foreach (int num in myArray1)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine("\n");
+            int[] sortbubble = SortBubble(myArray);
+            foreach (int num in sortbubble)
+            {
+                Console.Write(num + " ");
+            }
+        }
+        else
         {
-            Console.Write(num + " ");
+            ConsWriteLnText(false, "Массив не возможно вывести так как больше 10");
         }
-        Console.WriteLine("\n");
+    }
+    static int[] SortBubble(int[] original)
+    {
+        Console.WriteLine("sort bubble");
 
+        int[] sortArray = new int[original.Length];
+        for (int i = 0; i < original.Length; i++)
+        {
+            sortArray[i] = original[i];
+        }
+
+        int n= sortArray.Length;
+        
+        int swap;
+        for (int i = 0; i < n-1; i++)
+        {
+            for(int j=0;j<n-i-1 ;j++)
+
+            {
+                if (sortArray[j] > sortArray[j+1] )
+                {
+                     swap = sortArray[j];
+                    sortArray[j] = sortArray[j + 1];
+                    sortArray[j + 1] = swap;
+                    foreach (int num in sortArray)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    Console.WriteLine($"Поменяли {sortArray[j]} и {sortArray[j + 1]}");
+                }
+            }
+        }
+        return sortArray;
     }
 
 
