@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -10,21 +11,9 @@ class Program
         bool menu = true;
         while (menu == true)
         {
-            //Console.Clear();
             ConsoleWriteLineColor(true, "Выберите что-то из списка");
             Console.Write("1 - Отгадай ответ\n2 - Об авторе\n3 - Сортировка массива \n4 - Выход\n");
-            int number;
-            while (!int.TryParse(Console.ReadLine(), out number) || number > 4)
-            {
-                if (number > 4)
-                {
-                    ConsoleWriteLineColor(false, "Введите число меньше 3");
-                }
-                else
-                {
-                    ConsoleWriteLineColor(false, "Введите число!!!!");
-                }
-            }
+            int number= InputNumber();
             switch (number)
             {
                 case 1:
@@ -45,6 +34,22 @@ class Program
                     break;
             }
         }
+    }
+    static int InputNumber()
+    {
+        int number;
+        while (!int.TryParse(Console.ReadLine(), out number) || number > 4)
+        {
+            if (number > 4)
+            {
+                ConsoleWriteLineColor(false, "Введите число меньше 3");
+            }
+            else
+            {
+                ConsoleWriteLineColor(false, "Введите число!!!!");
+            }
+        }
+        return number;
     }
     static double Formula()
     {
@@ -136,13 +141,9 @@ class Program
     static int[] CopyArr(int[] originalArray)
     {
         int[] copyArray = new int[originalArray.Length];
-        for (int i = 0; i < originalArray.Length; i++)
-        {
-            copyArray[i] = originalArray[i];
-        }
+        Array.Copy(originalArray, copyArray, originalArray.Length);
         return copyArray;
     }
-   
     static void VivodVseh(int[] allArr)
     {
         foreach (int num in allArr)
@@ -165,13 +166,25 @@ class Program
             VivodVseh(copyArr);
             Console.WriteLine("\n");
 
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             Console.WriteLine("Сортировка пузырьком:");
             int[] sortbubble = SortBubble(myArray);
+            stopwatch.Stop();
+            var elapsedTime = stopwatch.Elapsed;
+            Console.WriteLine(elapsedTime.ToString() + "\n");
             VivodVseh(sortbubble);
 
+            Stopwatch stopwatch1 = new Stopwatch();
+            stopwatch1.Start();
             Console.WriteLine("Сортировка выбором:");
             int[] min  = SortSelection(copyArr);
+            
+            stopwatch1.Stop();
+            var elapsedTime1 = stopwatch1.Elapsed;
+            Console.WriteLine(elapsedTime1.ToString()+"\n");
             VivodVseh(min);
+
         }
         else
         {
@@ -183,16 +196,8 @@ class Program
     }
     static int[] SortBubble(int[] original)
     {
-        //Console.WriteLine("sort bubble");
-
-        int[] sortArray = new int[original.Length];
-        for (int i = 0; i < original.Length; i++)
-        {
-            sortArray[i] = original[i];
-        }
-
+        int[] sortArray = original;
         int n = sortArray.Length;
-
         int swap;
         for (int i = 0; i < n - 1; i++)
         {
@@ -212,12 +217,8 @@ class Program
     }
     static int[] SortSelection(int[] copy)
     {
-        int[] sortArray = new int[copy.Length];
+        int[] sortArray = copy;
         int n = copy.Length;
-        for (int i = 0; i < copy.Length; i++)
-        {
-            sortArray[i] = copy[i];
-        }
         for (int i = 0; i < n - 1; i++)
         {
             int min = i;
