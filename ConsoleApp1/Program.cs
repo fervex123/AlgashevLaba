@@ -175,19 +175,20 @@ class Program
             Console.WriteLine(elapsedTime.ToString() + "\n");
             VivodVseh(sortbubble);
 
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
+            stopwatch.Reset();
+            stopwatch.Start();
             Console.WriteLine("Сортировка выбором:");
             int[] min  = SortSelection(copyArr);
             
-            stopwatch1.Stop();
-            var elapsedTime1 = stopwatch1.Elapsed;
+            stopwatch.Stop();
+            var elapsedTime1 = stopwatch.Elapsed;
             Console.WriteLine(elapsedTime1.ToString()+"\n");
             VivodVseh(min);
 
         }
         else
         {
+            
             ConsoleWriteLineColor(false, "Массив не возможно вывести так как больше 10");
         }
         BackToMenuTxt();
