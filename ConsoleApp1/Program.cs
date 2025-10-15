@@ -8,20 +8,14 @@ class Program
     static void Main(string[] args) {
 
         bool menu = true;
-        const double eler = Math.E;
-       
-
         while (menu == true)
         {
-
             //Console.Clear();
             ConsoleWriteLineColor(true, "Выберите что-то из списка");
-            Console.Write("1 - Отгадай ответ\n2 - Об авторе\n4 - Выход\n");
+            Console.Write("1 - Отгадай ответ\n2 - Об авторе\n3 - Сортировка массива \n4 - Выход\n");
             int number;
-
             while (!int.TryParse(Console.ReadLine(), out number) || number > 4)
             {
-
                 if (number > 4)
                 {
                     ConsoleWriteLineColor(false, "Введите число меньше 3");
@@ -45,13 +39,10 @@ class Program
                 case 3:
                     Console.Clear();
                     WriteArray();
-
                     break;
-                case 4:
-                   
+                case 4: 
                     menu = ExiProgram();
                     break;
-
             }
         }
     }
@@ -59,7 +50,6 @@ class Program
     {
         const double eler = Math.E;
         double a;
-        
         while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
         {
             ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
@@ -71,9 +61,7 @@ class Program
             ConsoleWriteLineColor(false, "Ошибка: попытка извлечь корень из отрицательного числа!");
             BackToMenuTxt();
             Console.ReadKey();
-           
         }
-
         niz = (Math.Sqrt(niz));
         double result = verx / niz;
         result = (Math.Round(result, 2));
@@ -99,7 +87,6 @@ class Program
                 if (result == otvet)
                 {
                     i = 2;
-
                     ConsoleWriteLineColor(true, $"Ура победа! Ваш ответ: {otvet}");
                 }
                 if (result != otvet && i == 2)
@@ -122,11 +109,9 @@ class Program
             ConsoleWriteLineColor(false, "Деление на 0");
             BackToMenuTxt();
             Console.ReadKey();
-            
             return;
         }
     }
-
     static int ArrayLengthMethod()
     {
         int arrayLng;
@@ -139,16 +124,13 @@ class Program
     }
     static int[] RandomArray()
     {
-
         int size = ArrayLengthMethod();
         int[] a = new int[size];
         Random rnd = new Random();
         for (int i = 0; i < a.Length; i++)
         {
-
             a[i] = rnd.Next(-10, 10);
         }
-
         return a;
     }
     static int[] CopyArr(int[] originalArray)
@@ -160,15 +142,14 @@ class Program
         }
         return copyArray;
     }
+   
     static void VivodVseh(int[] allArr)
     {
-
         foreach (int num in allArr)
         {
             Console.Write(num + " ");
         }
         Console.WriteLine("\n");
-
     }
     static void WriteArray()
     {
@@ -183,6 +164,7 @@ class Program
             Console.WriteLine("Скопированный массив:");
             VivodVseh(copyArr);
             Console.WriteLine("\n");
+
             Console.WriteLine("Сортировка пузырьком:");
             int[] sortbubble = SortBubble(myArray);
             VivodVseh(sortbubble);
@@ -274,7 +256,6 @@ class Program
                         menu = false;
                         vixod = false;
                         Console.WriteLine("нажмите что-то чтобы закрыть");
-                       
                     }
                     else
                     {
