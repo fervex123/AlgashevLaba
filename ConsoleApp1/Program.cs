@@ -17,7 +17,9 @@ class Program
             switch (number)
             {
                 case 1:
-                    Game();
+                    double a = InputGameNumber();
+                    double result = Formula(a);
+                    Game(result);
                     BackToMenuTxt();
                     Console.ReadKey();
                     Console.Clear();
@@ -42,7 +44,7 @@ class Program
         {
             if (number > 4)
             {
-                ConsoleWriteLineColor(false, "Введите число меньше 3");
+                ConsoleWriteLineColor(false, "Введите число меньше 4");
             }
             else
             {
@@ -51,14 +53,30 @@ class Program
         }
         return number;
     }
-    static double Formula()
+    static double InputGameNumber()
     {
-        const double eler = Math.E;
+        Console.Clear();
+        ConsoleWriteLineColor(true, "Игра угадай число");
+        Console.WriteLine("Введите значение А не равное 0:");
         double a;
         while (!double.TryParse(Console.ReadLine(), out a) || a == 0)
         {
             ConsoleWriteLineColor(false, "Введите числовое значение для А не равное 0:");
         }
+        return a;
+    }
+    static double InpuOtvet()
+    {
+        double otvet;
+        while (!double.TryParse(Console.ReadLine(), out otvet))
+        {
+            ConsoleWriteLineColor(false, "Вы ввели не число(");
+        }
+        return otvet;
+    }
+    static double Formula(double a)
+    {
+        const double eler = Math.E;
         double verx = (Math.Sin(a) + Math.Tan(2 * a));
         double niz = (Math.Log(Math.Pow(eler, 2), 3));
         if (niz < 0)
@@ -72,22 +90,19 @@ class Program
         result = (Math.Round(result, 2));
         return result;
     }
-    private static void Game()
+    private static void Game(double result )
     {
         try
         {
-            Console.Clear();
-            ConsoleWriteLineColor(true, "Игра угадай число");
-            Console.WriteLine("Введите значение А не равное 0:");
-            double otvet;
-            double result = Formula();
+            //Console.Clear();
+            //ConsoleWriteLineColor(true, "Игра угадай число");
+            //Console.WriteLine("Введите значение А не равное 0:");
             ConsoleWriteLineColor(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
             for (int i = 0; i < 3; i++)
             {
-                while (!double.TryParse(Console.ReadLine(), out otvet))
-                {
-                    ConsoleWriteLineColor(false, "Вы ввели не число(");
-                }
+                double otvet = InpuOtvet();
+
+
                 Console.WriteLine($"\nПопытка {i + 1} из 3");
                 if (result == otvet)
                 {
@@ -146,50 +161,57 @@ class Program
     }
     static void VivodVseh(int[] allArr)
     {
-        foreach (int num in allArr)
+        if (allArr.Length > 10 == false)
         {
-            Console.Write(num + " ");
+            foreach (int num in allArr)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine("\n");
         }
-        Console.WriteLine("\n");
+        else
+        {
+            ConsoleWriteLineColor(false, "Массив не возможно вывести так как больше 10");
+        }
     }
     static void WriteArray()
     {
         int[] myArray = RandomArray();
-        if (myArray.Length > 10 == false)
-        {
-            Console.WriteLine("Сгенерированный массив:");
-            VivodVseh(myArray);
-            Console.WriteLine("\n");
+       
+        Console.WriteLine("Сгенерированный массив:");
+        VivodVseh(myArray);
+        Console.WriteLine("\n");
 
-            int[] copyArr = CopyArr(myArray);
-            Console.WriteLine("Скопированный массив:");
-            VivodVseh(copyArr);
-            Console.WriteLine("\n");
+        int[] copyArr = CopyArr(myArray);
+        Console.WriteLine("Скопированный массив:");
+        VivodVseh(copyArr);
+        Console.WriteLine("\n");
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Console.WriteLine("Сортировка пузырьком:");
-            int[] sortbubble = SortBubble(myArray);
-            stopwatch.Stop();
-            var elapsedTime = stopwatch.Elapsed;
-            Console.WriteLine(elapsedTime.ToString() + "\n");
-            VivodVseh(sortbubble);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        Console.WriteLine("Сортировка пузырьком:");
+        int[] sortbubble = SortBubble(myArray);
+        stopwatch.Stop();
+        var elapsedTime = stopwatch.Elapsed;
+        Console.WriteLine(elapsedTime.ToString() + "\n");
+        VivodVseh(sortbubble);
 
-            stopwatch.Reset();
-            stopwatch.Start();
-            Console.WriteLine("Сортировка выбором:");
-            int[] min  = SortSelection(copyArr);
+        Stopwatch stopwatch1 = new Stopwatch();
+        stopwatch1.Start();
+        Console.WriteLine("Сортировка выбором:");
+        int[] min  = SortSelection(copyArr);
             
-            stopwatch.Stop();
-            var elapsedTime1 = stopwatch.Elapsed;
-            Console.WriteLine(elapsedTime1.ToString()+"\n");
-            VivodVseh(min);
-
+        stopwatch1.Stop();
+        var elapsedTime1 = stopwatch1.Elapsed;
+        Console.WriteLine(elapsedTime1.ToString()+"\n");
+        VivodVseh(min);
+        if (elapsedTime1 < elapsedTime)
+        {
+            Console.WriteLine("Сортировка выбором быстрее");
         }
         else
         {
-            
-            ConsoleWriteLineColor(false, "Массив не возможно вывести так как больше 10");
+            Console.WriteLine("Сортировка пузырьком быстрее");
         }
         BackToMenuTxt();
         Console.ReadKey();
