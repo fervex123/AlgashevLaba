@@ -3,16 +3,78 @@ using System;
 using System.Diagnostics;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
 class Program
 {
+    static bool[,] mines;
+    static char[,] playerView;
+    static int openedCells = 0;
+    static bool gameOver = false;
+
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern IntPtr GetStdHandle(int nStdHandle);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFO_EX lpConsoleCurrentFontEx);
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    public struct CONSOLE_FONT_INFO_EX
+    {
+        public uint cbSize;
+        public uint nFont;
+        public COORD dwFontSize;
+        public int FontFamily;
+        public int FontWeight;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string FaceName;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct COORD
+    {
+        public short X;
+        public short Y;
+    }
+
+    private const int STD_OUTPUT_HANDLE = -11;
+    private const int TMPF_TRUETYPE = 4;
+    private const int LF_FACESIZE = 32;
+
+    static void SetConsoleFontSize(short fontSize)
+    {
+        IntPtr hnd = GetStdHandle(STD_OUTPUT_HANDLE);
+        if (hnd != IntPtr.Zero)
+        {
+            CONSOLE_FONT_INFO_EX info = new CONSOLE_FONT_INFO_EX();
+            info.cbSize = (uint)Marshal.SizeOf(info);
+            info.FontFamily = TMPF_TRUETYPE;
+            info.FaceName = "Consolas"; // Можно изменить на другой шрифт
+            info.dwFontSize = new COORD { X = 0, Y = fontSize };
+            info.FontWeight = 400; // Normal weight
+
+            SetCurrentConsoleFontEx(hnd, false, ref info);
+        }
+    }
+
+
+
+
+
+
     static void Main(string[] args) {
+
+        SetConsoleFontSize(24); 
+        
+
 
         bool menu = true;
         while (menu == true)
         {
             ConsoleWriteLineColor(true, "Выберите что-то из списка");
-            Console.Write("1 - Отгадай ответ\n2 - Об авторе\n3 - Сортировка массива \n4 - Выход\n");
+            Console.Write("1 - Отгадай ответ\n2 - Об авторе\n3 - Сортировка массива \n4 - Сапер\n5 - Выход\n");
             int number= InputNumber();
             switch (number)
             {
@@ -31,18 +93,293 @@ class Program
                     Console.Clear();
                     WriteArray();
                     break;
-                case 4: 
+                case 4:
+                    Console.Clear();
+                    PlayGame();
+
+
+
+
+                    break;
+                case 5:
                     menu = ExiProgram();
                     break;
             }
         }
     }
-    static int InputNumber()
+    static void PlayGame()
+    {
+        GenerateMines();
+        InitializePlayerView();
+
+        bool gameRunning = true;
+
+        while (gameRunning)
+        {
+         
+            Console.Clear();
+            Console.WriteLine("=== ИГРА САПЁР ===");
+            DisplayBoard();
+
+            // Получаем ход игрока
+            (int row, int col) = GetPlayerInput();
+
+            // Обрабатываем ход
+            OpenCell(row, col);
+
+            //// TODO: Здесь позже добавим проверку победы/поражения
+            
+            Console.WriteLine("Нажмите любую клавишу для продолжения...");
+            Console.ReadKey();
+        }
+    }
+    static void InitializePlayerView()
+    {
+        playerView = new char[5, 5];
+
+        // Заполняем все клетки точками (неоткрытые)
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                playerView[i, j] = '.';
+            }
+        }
+    }
+    static void GenerateMines()
+    {
+        mines = new bool[5, 5];
+        Random rand = new Random();
+        int onesCount = 0;
+
+        // false
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                mines[i, j] = false;
+            }
+        }
+
+        // Добавляем true
+        while (onesCount < 5)
+        {
+            int i = rand.Next(0, 5);
+            int j = rand.Next(0, 5);
+
+            if (mines[i, j] == false)
+            {
+                mines[i, j] = true;
+                onesCount++;
+            }
+        }
+    }
+
+
+
+
+    static (int, int) GetPlayerInput()
+    {
+        while (true)
+        {
+            Console.Write("Введите координаты (например: A1): ");
+            string coordinat = Console.ReadLine().ToUpper();
+            if (coordinat == "")
+            {
+                Console.WriteLine("Координаты не могут быть пустыми");
+                continue;
+            }
+            if (coordinat.Length == 2 && char.IsLetter(coordinat[0]) && char.IsDigit(coordinat[1]))
+            {
+                int col = coordinat[0] - 'A';
+                int row = coordinat[1] - '1';
+
+                if (row >= 0 && row < 5 && col >= 0 && col < 5)
+                {
+                    return (row, col);
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: Координаты должны быть от A1 до E5!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: Неправильный формат! Используйте букву и цифру (например: A1)");
+            }
+        }
+        
+    }
+    static void OpenCell(int row, int col)
+    {
+        // Проверяем, не открыта ли уже клетка
+        if (playerView[row, col] != '.')
+        {
+            Console.WriteLine("Эта клетка уже открыта!");
+            return;
+        }
+
+        // Если наступили на мину
+
+        if (mines[row, col])
+        {
+            playerView[row, col] = '*';
+            Console.WriteLine(" БОМБА! Вы проиграли!");
+            gameOver = true;
+            return;
+        }
+        // Подсчитываем мины вокруг
+        int mineCount = CountAdjacentMines(row, col);
+
+        if (mineCount > 0)
+        {
+            // Показываем цифру
+            playerView[row, col] = char.Parse(mineCount.ToString());
+        }
+        else
+        {
+            // Если мин вокруг нет, открываем клетку как пустую
+            playerView[row, col] = ' ';
+  
+            OpenAdjacentCells(row, col);
+        }
+        if (openedCells == 20)
+        {
+            gameOver = true;
+        }
+    }
+    static void OpenAdjacentCells(int row, int col)
+    {
+        // Проверяем все 8 соседних клеток
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                int newRow = row + i;
+                int newCol = col + j;
+
+                // Пропускаем текущую клетку и проверяем границы
+                if ((i == 0 && j == 0) ||
+                    newRow < 0 || newRow >= 5 ||
+                    newCol < 0 || newCol >= 5)
+                {
+                    continue;
+                }
+
+                // Если клетка еще не открыта И не мина
+                if (playerView[newRow, newCol] == '.' && !mines[newRow, newCol])
+                {
+                    int adjacentMines = CountAdjacentMines(newRow, newCol);
+
+                    if (adjacentMines > 0)
+                    {
+                        // Открываем с цифрой
+                        playerView[newRow, newCol] = char.Parse(adjacentMines.ToString());
+                    }
+                    else
+                    {
+                        // Если снова 0 мин - открываем как пустую и продолжаем рекурсию
+                        playerView[newRow, newCol] = ' ';
+                        OpenAdjacentCells(newRow, newCol); // Рекурсивный вызов!
+                    }
+                }
+            }
+        }
+    }
+    static int CountAdjacentMines(int row, int col)
+    {
+        int count = 0;
+
+        // Проверяем все 8 соседних клеток
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                int newRow = row + i;
+                int newCol = col + j;
+
+                // Пропускаем текущую клетку и проверяем границы
+                if ((i == 0 && j == 0) ||newRow < 0 || newRow >= 5 || newCol < 0 || newCol >= 5)
+                {
+                    continue;
+                }
+
+                if (mines[newRow, newCol])
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+    static void Pole()
+    {
+
+        for (int i = 0; i < mines.GetLength(0); i++)
+        {
+            for (int j = 0; j < mines.GetLength(1); j++)
+            {
+                if (mines[i, j] == true)
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(" " + mines[i, j] + "  ");
+
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write(" " + mines[i, j] + " ");
+
+                    Console.ResetColor();
+                }
+
+            }
+            Console.WriteLine();
+        }
+
+    }
+    static void DisplayBoard()
+    {
+        Console.WriteLine("   A  B  C  D  E"); 
+
+        for (int i = 0; i < 5; i++)
+        {
+            Console.Write($"{i + 1} ");
+
+            for (int j = 0; j < 5; j++)
+            {
+                if (playerView[i, j] == '.')
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" . ");
+                }
+                else if (playerView[i, j] == '*')
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write(" * ");
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write($" {playerView[i, j]} ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+        }
+        Pole();
+    }
+
+        static int InputNumber()
     {
         int number;
-        while (!int.TryParse(Console.ReadLine(), out number) || number > 4)
+        while (!int.TryParse(Console.ReadLine(), out number) || number > 5)
         {
-            if (number > 4)
+            if (number > 5)
             {
                 ConsoleWriteLineColor(false, "Введите число меньше 4");
             }
@@ -94,9 +431,6 @@ class Program
     {
         try
         {
-            //Console.Clear();
-            //ConsoleWriteLineColor(true, "Игра угадай число");
-            //Console.WriteLine("Введите значение А не равное 0:");
             ConsoleWriteLineColor(true, "Попробуй угадать ответ за 3 попытки с округлением до 2-х знаков после запятой");
             for (int i = 0; i < 3; i++)
             {
@@ -210,7 +544,7 @@ class Program
             Console.WriteLine("Сортировка выбором быстрее");
         }
         else
-        {
+        {   
             Console.WriteLine("Сортировка пузырьком быстрее");
         }
         BackToMenuTxt();
@@ -258,6 +592,15 @@ class Program
         }
         return copy;
     }
+
+
+
+    
+
+
+
+
+
     static void BackToMenuTxt()
     {
         Console.ForegroundColor = ConsoleColor.Green;
