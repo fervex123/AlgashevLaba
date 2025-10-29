@@ -112,25 +112,54 @@ class Program
         GenerateMines();
         InitializePlayerView();
 
-        bool gameRunning = true;
+        openedCells = 0;
+        gameOver = false;
 
-        while (gameRunning)
+        while (!gameOver)
         {
-         
             Console.Clear();
-            Console.WriteLine("=== ИГРА САПЁР ===");
+            Console.WriteLine("ИГРА САПЁР");
             DisplayBoard();
 
-            // Получаем ход игрока
             (int row, int col) = GetPlayerInput();
 
-            // Обрабатываем ход
             OpenCell(row, col);
+        }
+        Console.Clear();
+        RevealAllMines();
+        DisplayBoard();
 
-            //// TODO: Здесь позже добавим проверку победы/поражения
-            
-            Console.WriteLine("Нажмите любую клавишу для продолжения...");
-            Console.ReadKey();
+        if (openedCells == 20)
+        {
+            Console.WriteLine("ПОБЕДА! Вы открыли все безопасные клетки!");
+        }
+        else
+        {
+            Console.WriteLine("ПРОИГРЫШ! Вы наступили на мину!");
+            // Показываем где были все мины
+            Console.WriteLine("\nРасположение мин:");
+            Pole();
+        }
+        if (gameOver)
+        {
+            Console.WriteLine("Начать новую игру? y\n");
+            //PlayGame();
+        }
+        Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
+        Console.ReadKey();
+    }
+    static void RevealAllMines()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                // Если это мина и она еще не открыта
+                if (mines[i, j] && playerView[i, j] != '*')
+                {
+                    playerView[i, j] = '*';
+                }
+            }
         }
     }
     static void InitializePlayerView()
@@ -220,14 +249,14 @@ class Program
         }
 
         // Если наступили на мину
-
         if (mines[row, col])
         {
             playerView[row, col] = '*';
-            Console.WriteLine(" БОМБА! Вы проиграли!");
+            Console.WriteLine("БОМБА! Вы проиграли!");
             gameOver = true;
             return;
         }
+
         // Подсчитываем мины вокруг
         int mineCount = CountAdjacentMines(row, col);
 
@@ -240,15 +269,19 @@ class Program
         {
             // Если мин вокруг нет, открываем клетку как пустую
             playerView[row, col] = ' ';
-  
             OpenAdjacentCells(row, col);
         }
+
+       
+        openedCells++;
+
+       
         if (openedCells == 20)
         {
             gameOver = true;
         }
     }
-    static void OpenAdjacentCells(int row, int col)
+   static void OpenAdjacentCells(int row, int col)
     {
         // Проверяем все 8 соседних клеток
         for (int i = -1; i <= 1; i++)
@@ -280,8 +313,11 @@ class Program
                     {
                         // Если снова 0 мин - открываем как пустую и продолжаем рекурсию
                         playerView[newRow, newCol] = ' ';
-                        OpenAdjacentCells(newRow, newCol); // Рекурсивный вызов!
+                        OpenAdjacentCells(newRow, newCol);
                     }
+
+                    // Увеличиваем счетчик для каждой открытой клетки
+                    openedCells++;
                 }
             }
         }
@@ -371,8 +407,36 @@ class Program
             }
             Console.WriteLine();
         }
-        Pole();
+        //Pole();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         static int InputNumber()
     {
