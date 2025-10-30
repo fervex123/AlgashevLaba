@@ -110,15 +110,15 @@ class Program
     static void PlayGame()
     {
         GenerateMines();
-        InitializePlayerView();
+        PlayerBox();
 
         openedCells = 0;
         gameOver = false;
-
+        
         while (!gameOver)
         {
             Console.Clear();
-            Console.WriteLine("ИГРА САПЁР");
+            ConsoleWriteLineColor(true, "<<<<<ИГРА САПЁР>>>>>");
             DisplayBoard();
 
             (int row, int col) = GetPlayerInput();
@@ -126,27 +126,53 @@ class Program
             OpenCell(row, col);
         }
         Console.Clear();
+        ConsoleWriteLineColor(true, "<<<<<ИГРА САПЁР>>>>>");
+        
         RevealAllMines();
         DisplayBoard();
+        GameOver();
 
+
+       
+      Console.Clear();
+    }
+    static void GameOver()
+    {
+        
         if (openedCells == 20)
         {
-            Console.WriteLine("ПОБЕДА! Вы открыли все безопасные клетки!");
+            ConsoleWriteLineColor(true, "ПОБЕДА! Вы открыли все безопасные клетки!");
         }
         else
         {
-            Console.WriteLine("ПРОИГРЫШ! Вы наступили на мину!");
-            // Показываем где были все мины
-            Console.WriteLine("\nРасположение мин:");
-            Pole();
+            ConsoleWriteLineColor(false, "ПРОИГРЫШ! Вы наступили на мину!");
+
         }
         if (gameOver)
         {
-            Console.WriteLine("Начать новую игру? y\n");
-            //PlayGame();
+            char reGame;
+            Console.WriteLine("Начать новую игру? y/n");
+            while (char.TryParse(Console.ReadLine(), out reGame))
+            {
+                if (reGame == 'y' || reGame == 'n')
+                {
+                    if (reGame == 'y')
+                    {
+
+                        PlayGame();
+                       
+                    }
+                    else
+                    {
+                        BackToMenuTxt();
+                    }
+                }
+                else
+                {
+                    ConsoleWriteLineColor(false, "Введите n или y");
+                }
+            }
         }
-        Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
-        Console.ReadKey();
     }
     static void RevealAllMines()
     {
@@ -162,11 +188,9 @@ class Program
             }
         }
     }
-    static void InitializePlayerView()
+    static void PlayerBox()
     {
         playerView = new char[5, 5];
-
-        // Заполняем все клетки точками (неоткрытые)
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
@@ -181,7 +205,6 @@ class Program
         Random rand = new Random();
         int onesCount = 0;
 
-        // false
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 5; j++)
@@ -190,7 +213,6 @@ class Program
             }
         }
 
-        // Добавляем true
         while (onesCount < 5)
         {
             int i = rand.Next(0, 5);
@@ -241,10 +263,11 @@ class Program
     }
     static void OpenCell(int row, int col)
     {
-        // Проверяем, не открыта ли уже клетка
+        // проверка на отерытие
         if (playerView[row, col] != '.')
         {
             Console.WriteLine("Эта клетка уже открыта!");
+            Console.ReadKey();
             return;
         }
 
@@ -262,12 +285,10 @@ class Program
 
         if (mineCount > 0)
         {
-            // Показываем цифру
             playerView[row, col] = char.Parse(mineCount.ToString());
         }
         else
         {
-            // Если мин вокруг нет, открываем клетку как пустую
             playerView[row, col] = ' ';
             OpenAdjacentCells(row, col);
         }
@@ -349,33 +370,7 @@ class Program
 
         return count;
     }
-    static void Pole()
-    {
-
-        for (int i = 0; i < mines.GetLength(0); i++)
-        {
-            for (int j = 0; j < mines.GetLength(1); j++)
-            {
-                if (mines[i, j] == true)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.Write(" " + mines[i, j] + "  ");
-
-                    Console.ResetColor();
-                }
-                else
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.Write(" " + mines[i, j] + " ");
-
-                    Console.ResetColor();
-                }
-
-            }
-            Console.WriteLine();
-        }
-
-    }
+  
     static void DisplayBoard()
     {
         Console.WriteLine("   A  B  C  D  E"); 
@@ -407,7 +402,6 @@ class Program
             }
             Console.WriteLine();
         }
-        //Pole();
     }
 
 
@@ -674,15 +668,15 @@ class Program
      public static bool ExiProgram()
     {
         Console.Clear();
-        ConsoleWriteLineColor(true, "Вы дейсвительно хотите выйти: д|н");
+        ConsoleWriteLineColor(true, "Вы дейсвительно хотите выйти: y/n");
         char yn;
         bool menu = true;
         bool vixod = true;
          while (char.TryParse(Console.ReadLine(), out yn) && vixod == true)
             {
-                if (yn == 'д' || yn == 'н')
+                if (yn == 'y' || yn == 'n')
                 {
-                    if (yn == 'д')
+                    if (yn == 'y')
                     {
                         menu = false;
                         vixod = false;
@@ -696,7 +690,7 @@ class Program
                 }
                 else
                 {
-                    ConsoleWriteLineColor(false, "Введите д или н");
+                    ConsoleWriteLineColor(false, "Введите y или n");
                 }
             }
         Console.Clear();
