@@ -96,10 +96,6 @@ class Program
                 case 4:
                     Console.Clear();
                     PlayGame();
-
-
-
-
                     break;
                 case 5:
                     menu = ExiProgram();
@@ -180,7 +176,7 @@ class Program
         {
             for (int j = 0; j < 5; j++)
             {
-                // Если это мина и она еще не открыта
+                // откр все мины
                 if (mines[i, j] && playerView[i, j] != '*')
                 {
                     playerView[i, j] = '*';
@@ -263,15 +259,12 @@ class Program
     }
     static void OpenCell(int row, int col)
     {
-        // проверка на отерытие
         if (playerView[row, col] != '.')
         {
             Console.WriteLine("Эта клетка уже открыта!");
             Console.ReadKey();
             return;
         }
-
-        // Если наступили на мину
         if (mines[row, col])
         {
             playerView[row, col] = '*';
@@ -279,8 +272,6 @@ class Program
             gameOver = true;
             return;
         }
-
-        // Подсчитываем мины вокруг
         int mineCount = CountAdjacentMines(row, col);
 
         if (mineCount > 0)
@@ -304,15 +295,13 @@ class Program
     }
    static void OpenAdjacentCells(int row, int col)
     {
-        // Проверяем все 8 соседних клеток
+        
         for (int i = -1; i <= 1; i++)
         {
             for (int j = -1; j <= 1; j++)
             {
                 int newRow = row + i;
                 int newCol = col + j;
-
-                // Пропускаем текущую клетку и проверяем границы
                 if ((i == 0 && j == 0) ||
                     newRow < 0 || newRow >= 5 ||
                     newCol < 0 || newCol >= 5)
@@ -320,24 +309,21 @@ class Program
                     continue;
                 }
 
-                // Если клетка еще не открыта И не мина
+                
                 if (playerView[newRow, newCol] == '.' && !mines[newRow, newCol])
                 {
                     int adjacentMines = CountAdjacentMines(newRow, newCol);
 
                     if (adjacentMines > 0)
                     {
-                        // Открываем с цифрой
+                        
                         playerView[newRow, newCol] = char.Parse(adjacentMines.ToString());
                     }
                     else
-                    {
-                        // Если снова 0 мин - открываем как пустую и продолжаем рекурсию
+                    { 
                         playerView[newRow, newCol] = ' ';
                         OpenAdjacentCells(newRow, newCol);
                     }
-
-                    // Увеличиваем счетчик для каждой открытой клетки
                     openedCells++;
                 }
             }
@@ -347,15 +333,12 @@ class Program
     {
         int count = 0;
 
-        // Проверяем все 8 соседних клеток
         for (int i = -1; i <= 1; i++)
         {
             for (int j = -1; j <= 1; j++)
             {
                 int newRow = row + i;
                 int newCol = col + j;
-
-                // Пропускаем текущую клетку и проверяем границы
                 if ((i == 0 && j == 0) ||newRow < 0 || newRow >= 5 || newCol < 0 || newCol >= 5)
                 {
                     continue;
