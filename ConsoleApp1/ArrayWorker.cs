@@ -8,7 +8,9 @@ namespace ConsoleApp1
     /// </summary>
     public class ArrayWorker
     {
-         private static int ArrayLengthMethod()
+        private int[] array;
+        private int length;
+         public static int ArrayLengthMethod()
         {
             int arrayLng;
             ConsoleHelper.ConsoleWriteLineColor(true, "Введите длину массива не длинее 10");
@@ -18,9 +20,29 @@ namespace ConsoleApp1
             }
             return arrayLng;
         }
-        private static int[] RandomArray()
+        public ArrayWorker()
         {
-            int size = ArrayLengthMethod();
+            length = 10;
+            array = GenerateRandomArray(length);
+        }
+
+        /// <summary>
+        /// Конструктор с параметрами - создает массив заданного размера
+        /// </summary>
+        /// <param name="customLength">Количество элементов в массиве</param>
+        public ArrayWorker(int customLength)
+        {
+            if (customLength <= 0)
+                throw new ArgumentException("Длина массива должна быть положительным числом");
+
+            length = customLength;
+            array = GenerateRandomArray(length);
+        }
+        /// <summary>
+        /// Генерация рандомных числе
+        /// </summary>
+        private int[] GenerateRandomArray(int size)
+        {
             int[] a = new int[size];
             Random rnd = new Random();
             for (int i = 0; i < a.Length; i++)
@@ -29,6 +51,9 @@ namespace ConsoleApp1
             }
             return a;
         }
+        /// <summary>
+        /// Копирование массива
+        /// </summary>
         private static int[] CopyArr(int[] originalArray)
         {
             int[] copyArray = new int[originalArray.Length];
@@ -50,9 +75,12 @@ namespace ConsoleApp1
                 ConsoleHelper.ConsoleWriteLineColor(false, "Массив не возможно вывести так как больше 10");
             }
         }
+        /// <summary>
+        /// Вывод массивов и результаты времени
+        /// </summary>
         public void WriteArray()
         {
-            int[] myArray = RandomArray();
+            int[] myArray = GenerateRandomArray(length);
 
             Console.WriteLine("Сгенерированный массив:");
             VivodVseh(myArray);
@@ -92,7 +120,9 @@ namespace ConsoleApp1
             ConsoleHelper.BackToMenuTxt();
             Console.ReadKey();
             Console.Clear();
-        }
+        }   /// <summary>
+            /// Сортировка пузырьком
+            /// </summary>
         private static int[] SortBubble(int[] original)
         {
             int[] sortArray = original;
@@ -114,6 +144,9 @@ namespace ConsoleApp1
             }
             return sortArray;
         }
+        /// <summary>
+        /// Сортировка выбором
+        /// </summary>
         private static int[] SortSelection(int[] copy)
         {
             int[] sortArray = copy;

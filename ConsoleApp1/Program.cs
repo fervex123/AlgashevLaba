@@ -2,6 +2,7 @@
 using ConsoleApp1;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
@@ -87,9 +88,11 @@ class Program
                     Other.Avtor();
                     break;
                 case 3:
-                    Console.Clear();
-                    ArrayWorker arr= new ArrayWorker();
-                    arr.WriteArray();
+                    Console.Clear();   
+                    ArrayWorker customArray = new ArrayWorker(ArrayWorker.ArrayLengthMethod());
+                    customArray.WriteArray();
+                    ArrayWorker defaultArray = new ArrayWorker();
+                    defaultArray.WriteArray();
                     break;
                 case 4:
                     Console.Clear();
