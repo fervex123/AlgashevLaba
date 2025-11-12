@@ -444,7 +444,7 @@ class Program
         return a;
     }
     static double InpuOtvet()
-    {
+    { 
         double otvet;
         while (!double.TryParse(Console.ReadLine(), out otvet))
         {
