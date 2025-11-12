@@ -5,9 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleApp1
-{
+{  
+    /// <summary>
+    /// Статический класс для игры по отгадыванию ответа значения функции
+    /// </summary>
     public static class GameOtvet
     {
+        /// <summary>
+        /// Вычисляет значение функции по заданной формуле
+        /// </summary>
+        /// <param name="a">Входное значение параметра a</param>
+        /// <returns>Результат вычисления функции, округленный до 2 знаков после запятой</returns>
         public static double Formula(double a)
         {
             const double eler = Math.E;
@@ -24,6 +32,10 @@ namespace ConsoleApp1
             result = (Math.Round(result, 2));
             return result;
         }
+        /// <summary>
+        /// Основной метод игры по отгадыванию значения функции
+        /// </summary>
+        /// <param name="result">Правильное значение, которое нужно угадать</param>
         public static void Game(double result)
         {
             try

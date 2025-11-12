@@ -5,9 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleApp1
-{
-    static class StaticFunc
+{ 
+ 
+    public static class StaticFunc
     {
+        /// <summary>
+        /// Ввод ответа с валидацией
+        /// </summary>
+        /// <returns>Корректное число double</returns>
         public static double InpuOtvet()
         {
             double otvet;
@@ -17,6 +22,10 @@ namespace ConsoleApp1
             }
             return otvet;
         }
+        /// <summary>
+        /// Ввод игрового числа с валидацией (не равное 0)
+        /// </summary>
+        /// <returns>Корректное число double не равное 0</returns>
         public static double InputGameNumber()
         {
             Console.Clear();
@@ -29,6 +38,10 @@ namespace ConsoleApp1
             }
             return a;
         }
+        /// <summary>
+        /// Ввод номера меню с валидацией
+        /// </summary>
+        /// <returns>Корректный номер пункта меню от 1 до 5</returns>
         public static int InputNumber()
         {
             int number;

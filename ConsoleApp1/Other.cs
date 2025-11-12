@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    /// <summary>
+     /// Статический класс с вспомогательными методами для работы с программой
+     /// </summary>
     static class Other
     {
+        /// <summary>
+        /// Обрабатывает выход из программы с подтверждением пользователя
+        /// </summary>
+        /// <returns>true - продолжить работу программы, false - завершить программу</returns>
         public static bool ExiProgram()
         {
             Console.Clear();
@@ -39,6 +46,9 @@ namespace ConsoleApp1
             Console.Clear();
             return menu;
         }
+        /// <summary>
+        /// Отображает информацию об авторе программы
+        /// </summary>
         public static void Avtor()
         {
             Console.Clear();

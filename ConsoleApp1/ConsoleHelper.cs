@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace ConsoleApp1
 {
     static class ConsoleHelper
-    {
+    {  /// <summary>
+       /// Перекраска текста
+       /// </summary>
         public static string ConsoleWriteLineColor(bool warning, string a)
         {
             if (warning == true)
@@ -22,6 +24,9 @@ namespace ConsoleApp1
             Console.ResetColor();
             return a;
         }
+        /// <summary>
+        /// функция возврата
+        /// </summary>
         public static void BackToMenuTxt()
         {
             Console.ForegroundColor = ConsoleColor.Green;
